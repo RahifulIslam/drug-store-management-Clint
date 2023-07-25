@@ -35,7 +35,7 @@ const SignInPage = () => {
         signInData
       );
       console.log(response.data); // Handle successful response
-      navigate("/home");
+      navigate("/sidebar");
     } catch (error) {
       console.error(error); // Handle error
       setErrorMessage(error.response.data);

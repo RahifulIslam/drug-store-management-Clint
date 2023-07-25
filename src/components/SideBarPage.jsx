@@ -13,15 +13,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from '@mui/icons-material/Home';
-import GroupIcon from '@mui/icons-material/Group';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
-import SellIcon from '@mui/icons-material/Sell';
-import HomePage from "./HomePage";
-
+import PeopleIcon from '@mui/icons-material/People';
+import LocalPharmacyIcon from '@mui/icons-material/LocalPharmacy';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { useNavigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -104,12 +102,26 @@ export default function Sidebar() {
     setOpen(false);
   };
 
+  const navigate = useNavigate();
+
+  const handleNavigation = (page) => {
+    navigate(`/${page}`);
+  };
+
+  const options = [
+    { label: 'Home', icon: <HomeIcon />, page: 'home' },
+    { label: 'Users', icon: <PeopleIcon />, page: 'users' },
+    { label: 'Medicines', icon: <LocalPharmacyIcon />, page: 'medicines' },
+    { label: 'Sales', icon: <MonetizationOnIcon />, page: 'sales' },
+  ];
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <IconButton
+          
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -138,91 +150,14 @@ export default function Sidebar() {
         </DrawerHeader>
         <Divider />
         <List>
-            <ListItem disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                <HomeIcon />
-                </ListItemIcon>
-                <ListItemText primary="Home"/>
-              </ListItemButton>
-            </ListItem>
+      {options.map((option, index) => (
+        <ListItem key={index} onClick={() => handleNavigation(option.page)}>
+          <ListItemIcon style={{ cursor: 'pointer' }}>{option.icon}</ListItemIcon>
+          <ListItemText primary={option.label} />
+        </ListItem>
+      ))}
+    </List>
 
-            <ListItem disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                <GroupIcon />
-                </ListItemIcon>
-                <ListItemText primary="Users"/>
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                <MedicalServicesIcon />
-                </ListItemIcon>
-                <ListItemText primary="Medicines"/>
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding sx={{ display: "block" }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                  }}
-                >
-                  <SellIcon />
-                </ListItemIcon>
-                <ListItemText primary="Sales"/>
-              </ListItemButton>
-            </ListItem>
-         
-        </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
         {/* {menuData == "HomePage" && <HomePage/>} */}
