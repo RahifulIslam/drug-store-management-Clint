@@ -46,7 +46,7 @@ const AddMedicineModal = () => {
           <Typography variant="h6" component="h2"  style={{color: 'black'}}>
             Add New Product
           </Typography>
-          <ProductForm />
+          <ProductForm  handleClose={handleClose}/>
         </Box>
       </Modal>
     </div>

@@ -35,6 +35,7 @@ const SignInPage = () => {
         signInData
       );
       console.log(response.data); // Handle successful response
+      localStorage.setItem("token", response.data.token);
       navigate("/sidebar");
     } catch (error) {
       console.error(error); // Handle error
