@@ -50,7 +50,7 @@ const ProductForm = () => {
       console.log('Response:', response.data);
       // You can handle the response here or perform any other actions after successful submission
       resetForm(); // Reset form fields
-      handleClose();
+      // handleClose();
     } catch (error) {
       console.error('Error:', error);
       // Handle the error if the API request fails
