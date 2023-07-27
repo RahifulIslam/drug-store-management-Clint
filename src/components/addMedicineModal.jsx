@@ -22,7 +22,7 @@ const AddMedicineModal = () => {
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained" sx={{ position: "fixed", top: 50, right: 60, zIndex: 2000 }} color="primary">
+      <Button onClick={handleOpen} variant="contained" sx={{ position: "fixed", top: 50, right: 120, zIndex: 2000 }} color="primary">
         Open Modal
       </Button>
 

@@ -1,4 +1,5 @@
 import AddMedicineModal from './addMedicineModal';
+import MedicineTable from './medicineTable';
 // import BasicModal from './addMedicineModal'
 console.log("AddMedicineModal")
 const Medicines = () => {
@@ -6,6 +7,8 @@ const Medicines = () => {
     <>
     <AddMedicineModal/>
        {/* <BasicModal/> */}
+       <h1>Medicine List</h1>
+      <MedicineTable />
     </>
   )
 }
