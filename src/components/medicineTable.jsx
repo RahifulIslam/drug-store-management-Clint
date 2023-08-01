@@ -55,6 +55,7 @@ const MedicineTable = () => {
     handleMenuClose();
   };
 
+
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
@@ -128,7 +129,7 @@ const MedicineTable = () => {
                               onClose={handleMenuClose}
                             >
                               {/* Menu items */}
-                              <MenuItem
+                              <MenuItem 
                                 onClick={() =>
                                   handleMenuItemClick("addQuantity")
                                 }
