@@ -7,7 +7,7 @@ const Medicines = () => {
     <>
     <AddMedicineModal/>
        {/* <BasicModal/> */}
-       <h1>Medicine List</h1>
+       <h1>Product List</h1>
       <MedicineTable />
     </>
   )
