@@ -3,6 +3,7 @@ import { IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import AddMedicineQuantityModal from './AddMedicineQuantityModal';
 
 import {
   Table,
@@ -55,7 +56,6 @@ const MedicineTable = () => {
     handleMenuClose();
   };
 
-
   useEffect(() => {
     const fetchMedicines = async () => {
       try {
@@ -91,6 +91,28 @@ const MedicineTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  // Modal from the menuitem
+  // State to manage the modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Function to handle the click of "Add Quantity" MenuItem
+  const handleAddQuantityClick = () => {
+    setIsModalOpen(true);
+    // Additional logic related to "Add Quantity" can be added here
+  };
+
+  // Function to handle the click of "Update Medicine" MenuItem
+  const handleUpdateMedicineClick = () => {
+    setIsModalOpen(true);
+    // Additional logic related to "Update Medicine" can be added here
+  };
+
+  // Function to close the modal
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+  // Close modal for menuitem
 
   return (
     <div>
@@ -129,18 +151,11 @@ const MedicineTable = () => {
                               onClose={handleMenuClose}
                             >
                               {/* Menu items */}
-                              <MenuItem 
-                                onClick={() =>
-                                  handleMenuItemClick("addQuantity")
-                                }
-                              >
+                              <MenuItem onClick={handleAddQuantityClick}>
                                 Add Medicine Quantity
                               </MenuItem>
-                              <MenuItem
-                                onClick={() =>
-                                  handleMenuItemClick("updateField")
-                                }
-                              >
+
+                              <MenuItem onClick={handleUpdateMedicineClick}>
                                 Update the Medicine
                               </MenuItem>
                             </Menu>
@@ -168,6 +183,7 @@ const MedicineTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+      <AddMedicineQuantityModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}/>
     </div>
   );
 };
