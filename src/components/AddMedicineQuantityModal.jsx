@@ -1,10 +1,11 @@
 import Modal from "@mui/material/Modal";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
-  // console.log("Open modal", isModalOpen);
-  // console.log("Close the Modal", handleCloseModal)
   const style = {
     position: "absolute",
     top: "50%",
@@ -12,7 +13,7 @@ const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    border: "2px solid #000",
+    // border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
@@ -25,12 +26,40 @@ const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            style={{ marginLeft: "20px" }}
+          >
+            Add quantity
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
+          <div
+            style={{
+              margin: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+            }}
+          >
+            <TextField
+              label="Add New Quantity"
+              variant="outlined"
+              fullWidth
+              // value={newQuantity}
+              // onChange={(e) => setNewQuantity(e.target.value)}
+            />
+            <Grid container justifyContent="center">
+              <Button
+                variant="contained"
+                color="primary"
+                style={{ width: "50%" }}
+                // onClick={handleAddQuantity}
+              >
+                Add Quantity
+              </Button>
+            </Grid>
+          </div>
         </Box>
       </Modal>
     </div>

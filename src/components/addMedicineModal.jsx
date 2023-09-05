@@ -10,19 +10,19 @@ import ProductForm from './ProductForm'; // Assuming this is the file where you 
 const AddMedicineModal = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [open, setOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
 
   return (
     <div>
-      <Button onClick={handleOpen} variant="contained" sx={{ position: "fixed", top: 50, right: 120, zIndex: 2000 }} color="primary">
+      <Button onClick={handleOpen} variant="contained" 
+      sx={{ position: "fixed", top: 50, right: 120, zIndex: 2000 }} color="primary">
         Open Modal
       </Button>
 

@@ -4,6 +4,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddMedicineQuantityModal from './AddMedicineQuantityModal';
+import UpdateMedicineModal from "./UpdateMedicineModal";
 
 import {
   Table,
@@ -93,26 +94,22 @@ const MedicineTable = () => {
   };
 
   // Modal from the menuitem
-  // State to manage the modal visibility
+  // Modal for add quantity
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Function to handle the click of "Add Quantity" MenuItem
   const handleAddQuantityClick = () => {
     setIsModalOpen(true);
-    // Additional logic related to "Add Quantity" can be added here
   };
-
-  // Function to handle the click of "Update Medicine" MenuItem
-  const handleUpdateMedicineClick = () => {
-    setIsModalOpen(true);
-    // Additional logic related to "Update Medicine" can be added here
-  };
-
-  // Function to close the modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
-  // Close modal for menuitem
+
+  const [isOpenForUpdate, setIsOpenForUpdate] = useState(false);
+  const handleUpdateClick = () => {
+    setIsOpenForUpdate(true);
+  }
+  const handleCloseUpdate = () => {
+    setIsOpenForUpdate(false);
+  }
 
   return (
     <div>
@@ -155,7 +152,7 @@ const MedicineTable = () => {
                                 Add Medicine Quantity
                               </MenuItem>
 
-                              <MenuItem onClick={handleUpdateMedicineClick}>
+                              <MenuItem onClick={handleUpdateClick}>
                                 Update the Medicine
                               </MenuItem>
                             </Menu>
@@ -184,6 +181,7 @@ const MedicineTable = () => {
         />
       </Paper>
       <AddMedicineQuantityModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}/>
+      <UpdateMedicineModal isOpenForUpdate={isOpenForUpdate} handleCloseUpdate={handleCloseUpdate}/>
     </div>
   );
 };
