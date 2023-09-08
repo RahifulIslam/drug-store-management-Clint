@@ -3,7 +3,7 @@ import { IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import AddMedicineQuantityModal from './AddMedicineQuantityModal';
+import AddMedicineQuantityModal from "./AddMedicineQuantityModal";
 import UpdateMedicineModal from "./UpdateMedicineModal";
 
 import {
@@ -39,8 +39,8 @@ const MedicineTable = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Function to handle opening the menu
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenuOpen = (event, medicineId) => {
+    setAnchorEl({state: event.currentTarget,id: medicineId});
   };
 
   // Function to handle closing the menu
@@ -50,7 +50,6 @@ const MedicineTable = () => {
 
   // Function to handle the action when a menu item is clicked (you can implement the specific logic here)
   const handleMenuItemClick = (action) => {
-    // Add your logic here based on the action parameter
     console.log("Clicked:", action);
 
     // Close the menu
@@ -72,6 +71,7 @@ const MedicineTable = () => {
           "http://localhost:4000/api/medicine/getallmedicine",
           config
         );
+        // console.log("data from api", response.data)
         setMedicines(response.data);
       } catch (error) {
         console.error("Error fetching medicine data:", error);
@@ -93,11 +93,14 @@ const MedicineTable = () => {
     setPage(0);
   };
 
-  // Modal from the menuitem
   // Modal for add quantity
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleAddQuantityClick = () => {
+  const [selectedMedicineId, setSelectedMedicineId] = useState(null);
+
+  const handleAddQuantityClick = (medicineId) => {
+    setSelectedMedicineId(medicineId);
     setIsModalOpen(true);
+    console.log("Selected Medicine ID:", selectedMedicineId);
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -106,10 +109,10 @@ const MedicineTable = () => {
   const [isOpenForUpdate, setIsOpenForUpdate] = useState(false);
   const handleUpdateClick = () => {
     setIsOpenForUpdate(true);
-  }
+  };
   const handleCloseUpdate = () => {
     setIsOpenForUpdate(false);
-  }
+  };
 
   return (
     <div>
@@ -129,7 +132,7 @@ const MedicineTable = () => {
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
+            { medicines?.length>0 && (<TableBody>
               {medicines
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((medicine) => (
@@ -138,18 +141,21 @@ const MedicineTable = () => {
                       if (column.id === "action") {
                         return (
                           <TableCell key={column.id}>
-                            <IconButton onClick={handleMenuOpen}>
+                            <IconButton onClick={(event)=>handleMenuOpen(event, medicine._id)}>
                               <MoreVertIcon />
                             </IconButton>
-                            {/* Menu modal */}
+    
                             <Menu
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
+                              anchorEl={anchorEl?.state}
+                              open={Boolean(anchorEl?.state)}
                               onClose={handleMenuClose}
                             >
-                              {/* Menu items */}
-                              <MenuItem onClick={handleAddQuantityClick}>
-                                Add Medicine Quantity
+                              <MenuItem
+                                onClick={() =>
+                                handleAddQuantityClick(anchorEl?.id)
+                                }
+                              >
+                                Add Medicine Quantity 
                               </MenuItem>
 
                               <MenuItem onClick={handleUpdateClick}>
@@ -167,7 +173,7 @@ const MedicineTable = () => {
                     })}
                   </TableRow>
                 ))}
-            </TableBody>
+            </TableBody>)} 
           </Table>
         </TableContainer>
         <TablePagination
@@ -180,8 +186,15 @@ const MedicineTable = () => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <AddMedicineQuantityModal isModalOpen={isModalOpen} handleCloseModal={handleCloseModal}/>
-      <UpdateMedicineModal isOpenForUpdate={isOpenForUpdate} handleCloseUpdate={handleCloseUpdate}/>
+      <AddMedicineQuantityModal
+        isModalOpen={isModalOpen}
+        handleCloseModal={handleCloseModal}
+        selectedMedicineId={selectedMedicineId}
+      />
+      <UpdateMedicineModal
+        isOpenForUpdate={isOpenForUpdate}
+        handleCloseUpdate={handleCloseUpdate}
+      />
     </div>
   );
 };

@@ -4,8 +4,14 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import axios from "axios";
+import { useState } from "react";
 
-const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
+const AddMedicineQuantityModal = ({
+  isModalOpen,
+  handleCloseModal,
+  selectedMedicineId,
+}) => {
   const style = {
     position: "absolute",
     top: "50%",
@@ -13,10 +19,53 @@ const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
     transform: "translate(-50%, -50%)",
     width: 400,
     bgcolor: "background.paper",
-    // border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
+
+  const [newQuantity, setNewQuantity] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if(!newQuantity){
+      newErrors.add_quantities = 'Quantity number is required';
+    } else if(isNaN(newQuantity)){
+      newErrors.add_quantities = "Quantity must be a number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }; 
+
+  const handleAddQuantity = async (e) => {
+    e.preventDefault();
+
+    if(validateForm()){
+      try {
+        const token = localStorage.getItem("token");
+  
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const response = axios.put(
+          `http://localhost:4000/api/medicine/updateQuantity/${selectedMedicineId}`,
+          {
+            add_quantities: parseInt(newQuantity),
+          },
+          config
+        );
+        setNewQuantity("");
+        handleCloseModal();
+      } catch (error) {
+        console.error("Error:", error);
+        setErrorMessage(error.response.data);
+      }
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -46,15 +95,17 @@ const AddMedicineQuantityModal = ({ isModalOpen, handleCloseModal }) => {
               label="Add New Quantity"
               variant="outlined"
               fullWidth
-              // value={newQuantity}
-              // onChange={(e) => setNewQuantity(e.target.value)}
+              type="number"
+              value={newQuantity}
+              onChange={(e) => setNewQuantity(e.target.value)}
             />
+            {errors.add_quantities && <span className="error">{errors.add_quantities}</span>}
             <Grid container justifyContent="center">
               <Button
                 variant="contained"
                 color="primary"
                 style={{ width: "50%" }}
-                // onClick={handleAddQuantity}
+                onClick={handleAddQuantity}
               >
                 Add Quantity
               </Button>
