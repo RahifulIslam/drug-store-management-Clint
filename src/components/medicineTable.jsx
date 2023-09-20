@@ -30,7 +30,7 @@ const columns = [
   { id: "action", label: "Action" },
 ];
 
-const MedicineTable = () => {
+const MedicineTable = ({addValue}) => {
   const [medicines, setMedicines] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -39,22 +39,17 @@ const MedicineTable = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Function to handle opening the menu
-  const handleMenuOpen = (event, medicineId) => {
-    setAnchorEl({state: event.currentTarget,id: medicineId});
+  const handleMenuOpen = (event, medicine) => {
+    setAnchorEl({state: event.currentTarget,medicineData: medicine});
   };
 
-  // Function to handle closing the menu
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
 
-  // Function to handle the action when a menu item is clicked (you can implement the specific logic here)
-  const handleMenuItemClick = (action) => {
-    console.log("Clicked:", action);
-
-    // Close the menu
-    handleMenuClose();
-  };
+  useEffect(()=>{
+    setMedicines([...medicines, addValue])
+  },[addValue])
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -95,19 +90,23 @@ const MedicineTable = () => {
 
   // Modal for add quantity
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedMedicineId, setSelectedMedicineId] = useState(null);
+  const [selectedMedicineId, setSelectedMedicineId] = useState({});
 
-  const handleAddQuantityClick = (medicineId) => {
-    setSelectedMedicineId(medicineId);
+  const handleAddQuantityClick = (medicineData) => {
+    setSelectedMedicineId(medicineData);
     setIsModalOpen(true);
-    console.log("Selected Medicine ID:", selectedMedicineId);
+    // console.log("Selected Medicine ID:", selectedMedicineId);
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
   const [isOpenForUpdate, setIsOpenForUpdate] = useState(false);
-  const handleUpdateClick = () => {
+  const [selectedMedicineData, setSelectedMedicineData] = useState({});
+  console.log("Full Data:", selectedMedicineData);
+
+  const handleUpdateClick = (medicineData) => {
+    setSelectedMedicineData(medicineData);
     setIsOpenForUpdate(true);
   };
   const handleCloseUpdate = () => {
@@ -141,7 +140,7 @@ const MedicineTable = () => {
                       if (column.id === "action") {
                         return (
                           <TableCell key={column.id}>
-                            <IconButton onClick={(event)=>handleMenuOpen(event, medicine._id)}>
+                            <IconButton onClick={(event)=>handleMenuOpen(event, medicine)}>
                               <MoreVertIcon />
                             </IconButton>
     
@@ -151,14 +150,19 @@ const MedicineTable = () => {
                               onClose={handleMenuClose}
                             >
                               <MenuItem
-                                onClick={() =>
-                                handleAddQuantityClick(anchorEl?.id)
-                                }
+                                onClick={() =>{
+                                  handleAddQuantityClick(anchorEl?.medicineData);
+                                  handleMenuClose();
+                                }}
                               >
                                 Add Medicine Quantity 
                               </MenuItem>
 
-                              <MenuItem onClick={handleUpdateClick}>
+                              <MenuItem onClick={()=>{
+                                handleUpdateClick(anchorEl?.medicineData);
+                                handleMenuClose();
+                              }}
+                              >
                                 Update the Medicine
                               </MenuItem>
                             </Menu>
@@ -194,6 +198,7 @@ const MedicineTable = () => {
       <UpdateMedicineModal
         isOpenForUpdate={isOpenForUpdate}
         handleCloseUpdate={handleCloseUpdate}
+        selectedMedicineData={selectedMedicineData}
       />
     </div>
   );

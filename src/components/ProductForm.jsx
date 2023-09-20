@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { TextField, FormControl, InputLabel, InputAdornment, OutlinedInput, Button, Grid  } from '@mui/material';
 import axios from 'axios'; // Import Axios
 
-const ProductForm = ({ handleClose }) => {
+const ProductForm = ({ setAddValue, handleClose }) => {
   const initialValues = {
     name: '',
     type: '',
@@ -36,6 +36,8 @@ const ProductForm = ({ handleClose }) => {
   });
 
   const handleSubmit = async (values, { resetForm }) => {
+    console.log("Form values are:", values)
+    setAddValue(values)
     try {
       // Retrieve the token from local storage
       const token = localStorage.getItem("token");

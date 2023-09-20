@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import axios from "axios";
 import { useState } from "react";
 
+
 const AddMedicineQuantityModal = ({
   isModalOpen,
   handleCloseModal,
@@ -51,7 +52,7 @@ const AddMedicineQuantityModal = ({
           },
         };
         const response = axios.put(
-          `http://localhost:4000/api/medicine/updateQuantity/${selectedMedicineId}`,
+          `http://localhost:4000/api/medicine/updateQuantity/${selectedMedicineId._id}`,
           {
             add_quantities: parseInt(newQuantity),
           },
@@ -91,6 +92,9 @@ const AddMedicineQuantityModal = ({
               gap: "20px",
             }}
           >
+            <Typography variant="h5" gutterBottom>
+            Current Quantity: {selectedMedicineId.quantity}
+            </Typography>
             <TextField
               label="Add New Quantity"
               variant="outlined"

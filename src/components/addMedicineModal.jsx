@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ProductForm from './ProductForm'; // Assuming this is the file where you defined the ProductForm component
 
-const AddMedicineModal = () => {
+const AddMedicineModal = ({setAddValue}) => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -46,7 +46,7 @@ const AddMedicineModal = () => {
           <Typography variant="h6" component="h2"  style={{color: 'black'}}>
             Add New Product
           </Typography>
-          <ProductForm  handleClose={handleClose}/>
+          <ProductForm setAddValue={setAddValue}  handleClose={handleClose}/>
         </Box>
       </Modal>
     </div>
