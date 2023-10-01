@@ -12,7 +12,11 @@ const AddMedicineQuantityModal = ({
   isModalOpen,
   handleCloseModal,
   selectedMedicineId,
+  setAddUpdateQuantity,
+  setMedicines,
+  medicines
 }) => {
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -24,8 +28,11 @@ const AddMedicineQuantityModal = ({
     p: 4,
   };
 
+  // console.log("Selected Medicine Id is:", selectedMedicineId);
+
   const [newQuantity, setNewQuantity] = useState("");
   const [errors, setErrors] = useState({});
+  // setAddUpdateQuantity({item: selectedMedicineId});
 
   const validateForm = () => {
     const newErrors = {};
@@ -40,6 +47,10 @@ const AddMedicineQuantityModal = ({
   }; 
 
   const handleAddQuantity = async (e) => {
+    let tempMedicine = medicines;
+    tempMedicine[selectedMedicineId.index].quantity = parseInt(tempMedicine[selectedMedicineId.index].quantity) + parseInt(newQuantity)
+    console.log("Temp Medicine are:", tempMedicine)
+    setMedicines(tempMedicine)
     e.preventDefault();
 
     if(validateForm()){
@@ -52,7 +63,7 @@ const AddMedicineQuantityModal = ({
           },
         };
         const response = axios.put(
-          `http://localhost:4000/api/medicine/updateQuantity/${selectedMedicineId._id}`,
+          `http://localhost:4000/api/medicine/updateQuantity/${selectedMedicineId?.medicineData._id}`,
           {
             add_quantities: parseInt(newQuantity),
           },
@@ -93,7 +104,7 @@ const AddMedicineQuantityModal = ({
             }}
           >
             <Typography variant="h5" gutterBottom>
-            Current Quantity: {selectedMedicineId.quantity}
+            Current Quantity: {selectedMedicineId?.medicineData?.quantity}
             </Typography>
             <TextField
               label="Add New Quantity"

@@ -6,7 +6,7 @@ import Sidebar from './components/SideBarPage'
 import Home from './components/Home';
 import Users from './components/Users';
 import Medicines from './components/Medicines';
-import Sales from './components/Sales';
+import Sales from './components/Sales/Sales';
 
 
 function App() {

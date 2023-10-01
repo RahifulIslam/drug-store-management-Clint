@@ -1,0 +1,84 @@
+.sales-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    min-height: 100vh;
+    background-color: rgb(127, 127, 155);
+    padding: 20px;
+    gap: 5px;
+  }
+
+  .sales-container__addMedicine,  .sales-container__showMedicine {
+    position: relative;
+    max-width: 700px;
+    width: 50%;
+    background: #fff;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
+    margin-bottom: 40px;
+  }
+
+  .sales-container__addMedicine header{
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .sales-container__addMedicine .form {
+    margin-top: 10px;
+  }
+
+  .form .input-box{
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .form button {
+    height: 50px;
+    width: 100%;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    margin-top: 30px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 400;
+    transition: all 0.2s ease;
+    background-color: rgb(130, 106, 251);
+  }
+
+  .form button:hover {
+    background-color: rgb(87, 87, 230);
+  }
+
+  .input-box label {
+    color: #333;
+  }
+
+  .form .input-box select, input {
+    position: relative;
+    height: 40px;
+    width: 100%;
+    outline: none;
+    font-size: 1rem;
+    color: #707070;
+    margin-top: 3px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    padding: 0 15px;
+  }
+
+  /* .form .input-box input{
+    position: relative;
+    height: 40px;
+    width: 100%;
+    outline: none;
+  } */

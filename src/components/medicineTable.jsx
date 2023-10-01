@@ -35,12 +35,19 @@ const MedicineTable = ({addValue}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  // add update quantity in the medicine table
+  const [addUpdateQuantity, setAddUpdateQuantity] = useState({});
+  console.log("Updated quantity is:", addUpdateQuantity)
+  // add update data in the medicine table
+  const [addUpdateData, setAddUpdateData] = useState({});
+  // console.log("Updated data is:", addUpdateData)
+
   // State to track the anchor element for the menu
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Function to handle opening the menu
-  const handleMenuOpen = (event, medicine) => {
-    setAnchorEl({state: event.currentTarget,medicineData: medicine});
+  const handleMenuOpen = (event, medicine, index) => {
+    setAnchorEl({state: event.currentTarget,medicineData: medicine, index: index});
   };
 
   const handleMenuClose = () => {
@@ -50,6 +57,14 @@ const MedicineTable = ({addValue}) => {
   useEffect(()=>{
     setMedicines([...medicines, addValue])
   },[addValue])
+
+  useEffect(()=>{
+    setMedicines([...medicines, addUpdateQuantity])
+  }, [addUpdateQuantity])
+
+  useEffect(()=>{
+    setMedicines([...medicines, addUpdateData])
+  }, [addUpdateData])
 
   useEffect(() => {
     const fetchMedicines = async () => {
@@ -93,6 +108,7 @@ const MedicineTable = ({addValue}) => {
   const [selectedMedicineId, setSelectedMedicineId] = useState({});
 
   const handleAddQuantityClick = (medicineData) => {
+    console.log("Medicine data are:", medicineData)
     setSelectedMedicineId(medicineData);
     setIsModalOpen(true);
     // console.log("Selected Medicine ID:", selectedMedicineId);
@@ -134,13 +150,13 @@ const MedicineTable = ({addValue}) => {
             { medicines?.length>0 && (<TableBody>
               {medicines
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((medicine) => (
+                .map((medicine, index) => (
                   <TableRow key={medicine._id}>
                     {columns.map((column) => {
                       if (column.id === "action") {
                         return (
                           <TableCell key={column.id}>
-                            <IconButton onClick={(event)=>handleMenuOpen(event, medicine)}>
+                            <IconButton onClick={(event)=>handleMenuOpen(event, medicine, index)}>
                               <MoreVertIcon />
                             </IconButton>
     
@@ -151,7 +167,7 @@ const MedicineTable = ({addValue}) => {
                             >
                               <MenuItem
                                 onClick={() =>{
-                                  handleAddQuantityClick(anchorEl?.medicineData);
+                                  handleAddQuantityClick(anchorEl);
                                   handleMenuClose();
                                 }}
                               >
@@ -194,11 +210,15 @@ const MedicineTable = ({addValue}) => {
         isModalOpen={isModalOpen}
         handleCloseModal={handleCloseModal}
         selectedMedicineId={selectedMedicineId}
+        setAddUpdateQuantity={setAddUpdateQuantity}
+        setMedicines={setMedicines}
+        medicines={medicines}
       />
       <UpdateMedicineModal
         isOpenForUpdate={isOpenForUpdate}
         handleCloseUpdate={handleCloseUpdate}
         selectedMedicineData={selectedMedicineData}
+        setAddUpdateData={setAddUpdateData}
       />
     </div>
   );

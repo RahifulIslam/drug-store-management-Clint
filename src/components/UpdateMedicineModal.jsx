@@ -12,6 +12,7 @@ const UpdateMedicineModal = ({
   isOpenForUpdate,
   handleCloseUpdate,
   selectedMedicineData,
+  setAddUpdateData
 }) => {
   const initialUpdateMedicineData = {
     name: "",
@@ -26,8 +27,8 @@ const UpdateMedicineModal = ({
   const [updateMedicineData, setUpdateMedicineData] = useState(
     initialUpdateMedicineData
   );
-
   const [errors, setErrors] = useState({});
+  setAddUpdateData(updateMedicineData)
 
   useEffect(()=>{
     if(selectedMedicineData != undefined){
