@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../Context/CreateContext";
 import "../../styles/sales/sales.css";
 const Sales = () => {
+  console.log("Data from the user context", UserContext);
+  const medicinesList = useContext(UserContext);
+  console.log("Medicines are:", medicinesList);
   const [product, setProduct] = useState({
-    category: "",
     medicine: "",
     quantity: 0,
     price: 0,
   });
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
 
-  const categories = ["Category 1", "Category 2", "Category 3"];
   const medicines = ["Medicine A", "Medicine B", "Medicine C"];
 
   const handleInputChange = (e) => {
@@ -22,15 +24,9 @@ const Sales = () => {
   };
 
   const handleAddProduct = () => {
-    if (
-      product.category &&
-      product.medicine &&
-      product.quantity > 0 &&
-      product.price > 0
-    ) {
+    if (product.medicine && product.quantity > 0 && product.price > 0) {
       setProducts([...products, product]);
       setProduct({
-        category: "",
         medicine: "",
         quantity: 0,
         price: 0,
@@ -44,32 +40,14 @@ const Sales = () => {
         <header>Add Product</header>
         <form action="#" className="form">
           <div className="input-box">
-            <label>Select Category:</label>
-            <select
-              name="category"
-              value={product.category}
-              onChange={handleInputChange}
-            >
-              <option value="">Select a category</option>
-              {categories.map((category, index) => (
-                <option key={index} value={category}>
-                  {category}
-                </option>
-              ))}
-              ;
-            </select>
-          </div>
-
-          <div className="input-box">
             <label>Medicine:</label>
             <select name="medicine" value={product.medicine}>
               <option value="">Select a medicine</option>
-              {medicines.map((medicine, index) => {
+              {medicines.map((medicine, index) => (
                 <option key={index} value={medicine}>
                   {medicine}
-                </option>;
-              })}
-              ;
+                </option>
+              ))}
             </select>
           </div>
 
@@ -101,21 +79,19 @@ const Sales = () => {
         <table>
           <thead>
             <tr>
-              <th>Category</th>
               <th>Medicine</th>
               <th>Quantity</th>
               <th>Price</th>
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
+            {/* {products.map((product, index) => (
               <tr key={index}>
-                <td>{product.category}</td>
                 <td>{product.medicine}</td>
                 <td>{product.quantity}</td>
                 <td>{product.price}</td>
               </tr>
-            ))}
+            ))} */}
           </tbody>
         </table>
       </div>

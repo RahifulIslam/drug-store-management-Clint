@@ -5,6 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddMedicineQuantityModal from "./AddMedicineQuantityModal";
 import UpdateMedicineModal from "./UpdateMedicineModal";
+import { UserContext } from "./Context/CreateContext";
 
 import {
   Table,
@@ -130,7 +131,7 @@ const MedicineTable = ({addValue}) => {
   };
 
   return (
-    <div>
+    <UserContext.Provider value={medicines}>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -220,7 +221,7 @@ const MedicineTable = ({addValue}) => {
         selectedMedicineData={selectedMedicineData}
         setAddUpdateData={setAddUpdateData}
       />
-    </div>
+    </UserContext.Provider>
   );
 };
 

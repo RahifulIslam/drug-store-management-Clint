@@ -3,7 +3,7 @@
     flex-direction: row;
     justify-content: space-around;
     min-height: 100vh;
-    background-color: rgb(127, 127, 155);
+    background-color: white;
     padding: 20px;
     gap: 5px;
   }
@@ -19,10 +19,12 @@
     /* align-items: center; */
     justify-content: center;
     align-items: center;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
     margin-bottom: 40px;
+  }
+
+  .sales-container__showMedicine{
+    border-left: 1px solid grey;
   }
 
   .sales-container__addMedicine header{
