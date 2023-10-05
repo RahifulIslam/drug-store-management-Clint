@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-import { UserContext } from "../Context/CreateContext";
 import "../../styles/sales/sales.css";
+import { Box } from "@mui/material";
+import Sidebar from "../SideBarPage";
 const Sales = () => {
-  console.log("Data from the user context", UserContext);
-  const medicinesList = useContext(UserContext);
-  console.log("Medicines are:", medicinesList);
   const [product, setProduct] = useState({
     medicine: "",
     quantity: 0,
@@ -35,6 +33,9 @@ const Sales = () => {
   };
 
   return (
+    <>
+    <Box sx={{display: 'flex'}}>
+      <Sidebar/>
     <div className="sales-container">
       <div className="sales-container__addMedicine">
         <header>Add Product</header>
@@ -96,6 +97,8 @@ const Sales = () => {
         </table>
       </div>
     </div>
+    </Box>
+    </>
   );
 };
 

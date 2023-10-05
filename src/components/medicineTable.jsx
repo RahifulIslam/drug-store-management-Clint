@@ -5,7 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AddMedicineQuantityModal from "./AddMedicineQuantityModal";
 import UpdateMedicineModal from "./UpdateMedicineModal";
-import { UserContext } from "./Context/CreateContext";
+
 
 import {
   Table,
@@ -82,7 +82,6 @@ const MedicineTable = ({addValue}) => {
           "http://localhost:4000/api/medicine/getallmedicine",
           config
         );
-        // console.log("data from api", response.data)
         setMedicines(response.data);
       } catch (error) {
         console.error("Error fetching medicine data:", error);
@@ -90,9 +89,6 @@ const MedicineTable = ({addValue}) => {
     };
 
     fetchMedicines();
-
-    // const interval = setInterval(fetchMedicines, 5000);
-    // return () => clearInterval(interval);
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -103,8 +99,6 @@ const MedicineTable = ({addValue}) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  // Modal for add quantity
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedMedicineId, setSelectedMedicineId] = useState({});
 
@@ -112,7 +106,6 @@ const MedicineTable = ({addValue}) => {
     console.log("Medicine data are:", medicineData)
     setSelectedMedicineId(medicineData);
     setIsModalOpen(true);
-    // console.log("Selected Medicine ID:", selectedMedicineId);
   };
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -120,7 +113,6 @@ const MedicineTable = ({addValue}) => {
 
   const [isOpenForUpdate, setIsOpenForUpdate] = useState(false);
   const [selectedMedicineData, setSelectedMedicineData] = useState({});
-  console.log("Full Data:", selectedMedicineData);
 
   const handleUpdateClick = (medicineData) => {
     setSelectedMedicineData(medicineData);
@@ -131,7 +123,7 @@ const MedicineTable = ({addValue}) => {
   };
 
   return (
-    <UserContext.Provider value={medicines}>
+    <div className="medicine-table">
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer sx={{ maxHeight: 440 }}>
           <Table stickyHeader aria-label="sticky table">
@@ -221,7 +213,7 @@ const MedicineTable = ({addValue}) => {
         selectedMedicineData={selectedMedicineData}
         setAddUpdateData={setAddUpdateData}
       />
-    </UserContext.Provider>
+    </div>
   );
 };
 
