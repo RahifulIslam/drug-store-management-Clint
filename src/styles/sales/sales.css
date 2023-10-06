@@ -43,6 +43,10 @@
     margin-top: 20px;
   }
 
+  .form .input-box .custom-select *{
+    cursor: pointer;
+  }
+
   .form button {
     height: 50px;
     width: 100%;
