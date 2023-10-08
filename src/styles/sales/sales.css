@@ -1,3 +1,7 @@
+*{
+  margin: 0;
+  padding: 0;
+}
 .sales-container {
     display: flex;
     flex-direction: row;
@@ -5,10 +9,10 @@
     min-height: 100vh;
     background-color: white;
     padding: 20px;
-    gap: 5px;
+    gap: 4rem;
   }
 
-  .sales-container__addMedicine,  .sales-container__showMedicine {
+  .sales-container__addMedicine{
     position: relative;
     max-width: 700px;
     width: 50%;
@@ -21,10 +25,7 @@
     align-items: center;
     margin-top: 30px;
     margin-bottom: 40px;
-  }
-
-  .sales-container__showMedicine{
-    border-left: 1px solid grey;
+    border-right: 1px solid grey;
   }
 
   .sales-container__addMedicine header{
@@ -88,3 +89,77 @@
     width: 100%;
     outline: none;
   } */
+
+.sales-container__dataAddedTable{
+  min-height: 100vh;
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  flex-direction: column;
+  height: 40px;
+  width: 100% !important;
+  width: auto;
+  overflow: hidden;
+  margin-right: 10px;
+ 
+}
+
+.table__header{
+  /* width: 100%;
+  height: 10%; */
+  background-color: #fff4;
+  padding: .8rem 1 rem;
+}
+
+.table__body{
+  width: 100%;
+  max-height: calc(50% - 1.6rem);
+  background-color: #fffb;
+  margin: .8rem auto;
+  overflow: auto;
+  border-bottom: 1px solid black;
+}
+
+table, th, td{
+  border-collapse: collapse;
+  padding: 1rem;
+  text-align: left;
+}
+
+table{
+  width: 100%;
+}
+
+thead, th{
+  position: sticky;
+  top: 0;
+  /* left: 0; */
+  background-color: #d5d1defe;
+}
+
+/* tbody tr :nth-child(even){
+  background-color: #0000000b;
+}
+
+tbody tr:hover{
+  background-color:#fff6;
+} */
+
+/* For the table section  */
+.remove-button {
+  cursor: pointer;
+  background-color: rgb(235, 13, 124);
+  /* font-size: 16px; */
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+@media (max-width: 1000px){
+  td:not(:first-of-type){
+    max-width: 12.1 rem;
+  }
+}
+
+

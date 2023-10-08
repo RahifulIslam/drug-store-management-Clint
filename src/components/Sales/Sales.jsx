@@ -13,9 +13,9 @@ const Sales = () => {
   });
 
   const [medicineName, setMedicineName] = useState([]);
-  // console.log("Medicine Name and types are:",medicineName)
+  // console.log("Medicine Name and types are:", medicineName);
 
-  const [products, setProducts] = useState({});
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const fetchMedicineName = async () => {
@@ -41,23 +41,20 @@ const Sales = () => {
     fetchMedicineName();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProduct({
-      ...product,
-      [name]: value,
-    });
-  };
-
   const handleAddProduct = () => {
-    if (product.medicine && product.quantity > 0 && product.price > 0) {
-      setProducts([...products, product]);
-      setProduct({
-        medicine: "",
-        quantity: 0,
-        price: 0,
-      });
-    }
+    // if (selectedMedicine && product.quantity > 0 && product.price > 0) {
+    //   // Set the medicine name in the product before adding it
+    //   const newProduct = {
+    //     ...product,
+    //     medicine: selectedMedicine.value, // Set the selected medicine name
+    //   };
+    //   setProducts([...products, newProduct]);
+    //   setProduct({
+    //     medicine: "",
+    //     quantity: 0,
+    //     price: 0,
+    //   });
+    // }
   };
 
   // For the searchable and scrolling
@@ -69,9 +66,44 @@ const Sales = () => {
 
   // State to track selected medicine
   const [selectedMedicine, setSelectedMedicine] = useState(null);
+  // State for store selected medicine data
+  const [selectedMedicineData, setSelectedMedicineData] = useState(null);
 
   const handleMedicineChange = (selectedOption) => {
     setSelectedMedicine(selectedOption);
+    // Find the selected medicine's data from the medicineName array
+    const selectedMedicineData = medicineName.find(
+      (medicine) => medicine.name === selectedOption.value
+    );
+
+    setSelectedMedicineData(selectedMedicineData);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "quantity" && selectedMedicineData) {
+      // Calculate the total price based on the selected medicine's selling price
+      const totalPrice =
+        selectedMedicineData.selling_price * parseInt(value, 10);
+
+      setProduct({
+        ...product,
+        [name]: value,
+        price: totalPrice, // Set the calculated total price
+      });
+    } else {
+      setProduct({
+        ...product,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleRemoveProduct = (index) => {
+    const updatedProducts = [...products];
+    updatedProducts.splice(index, 1);
+    setProducts(updatedProducts);
   };
 
   return (
@@ -81,7 +113,7 @@ const Sales = () => {
         <div className="sales-container">
           <div className="sales-container__addMedicine">
             <header>Add Product</header>
-            <form action="#" className="form">
+            <form className="form">
               <div className="input-box">
                 <label>Medicine:</label>
                 <Select
@@ -112,30 +144,43 @@ const Sales = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <button onClick={handleAddProduct}>Add</button>
+              <button onClick={(e)=>handleAddProduct(e)}>Add</button>
             </form>
           </div>
 
-          <div className="sales-container__showMedicine">
-            <h2>Added Products</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Medicine</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* {products.map((product, index) => (
-              <tr key={index}>
-                <td>{product.medicine}</td>
-                <td>{product.quantity}</td>
-                <td>{product.price}</td>
-              </tr>
-            ))} */}
-              </tbody>
-            </table>
+          <div className="sales-container__dataAddedTable">
+            <section className="table__header">
+              <h2>Added Products</h2>
+            </section>
+            <section className="table__body">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product, index) => (
+                    <tr key={index}>
+                      <td>{product.medicine}</td>
+                      <td>{product.quantity}</td>
+                      <td>{product.price}</td>
+                      <td>
+                        <button
+                          className="remove-button"
+                          onClick={() => handleRemoveProduct(index)}
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </section>
           </div>
         </div>
       </Box>

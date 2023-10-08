@@ -106,8 +106,8 @@ export default function Sidebar() {
     </List>
 
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
-      </Box>
+      {/* <Box component="main" sx={{ flexGrow: 1, p: 3 }} >
+      </Box> */}
 
     </Box>
   );
