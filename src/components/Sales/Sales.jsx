@@ -11,11 +11,22 @@ const Sales = () => {
     quantity: 0,
     price: 0,
   });
+  // console.log("Product are:", product)
+
+  const [products, setProducts] = useState([]);
 
   const [medicineName, setMedicineName] = useState([]);
   // console.log("Medicine Name and types are:", medicineName);
+  // State for store selected medicine data
+  const [selectedMedicineData, setSelectedMedicineData] = useState(null);
+  // console.log("Selected medicine data are:", selectedMedicineData)
 
-  const [products, setProducts] = useState([]);
+  // State to track selected medicine
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
+
+   //Calculate total price from the table
+   const [totalPrice, setTotalPrice] = useState(0);
+   console.log("Total Price are:", totalPrice)
 
   useEffect(() => {
     const fetchMedicineName = async () => {
@@ -41,20 +52,26 @@ const Sales = () => {
     fetchMedicineName();
   }, []);
 
-  const handleAddProduct = () => {
-    // if (selectedMedicine && product.quantity > 0 && product.price > 0) {
-    //   // Set the medicine name in the product before adding it
-    //   const newProduct = {
-    //     ...product,
-    //     medicine: selectedMedicine.value, // Set the selected medicine name
-    //   };
-    //   setProducts([...products, newProduct]);
-    //   setProduct({
-    //     medicine: "",
-    //     quantity: 0,
-    //     price: 0,
-    //   });
-    // }
+  const handleAddProduct = (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    if (selectedMedicine && product.quantity > 0 && product.price > 0) {
+      // Set the medicine name in the product before adding it
+      const newProduct = {
+        ...product,
+        medicine: selectedMedicine.value, // Set the selected medicine name
+      };
+      // console.log("New products are:", newProduct);
+      // console.log("Price of new product are:", newProduct.price)
+      setProducts([...products, newProduct]);
+      setProduct({
+        medicine: "",
+        quantity: 0,
+        price: 0,
+      });
+    // Update the total price by adding the price of the newly added product
+    setTotalPrice(totalPrice + newProduct.price);
+    }
   };
 
   // For the searchable and scrolling
@@ -64,12 +81,8 @@ const Sales = () => {
     label: medicine.name,
   }));
 
-  // State to track selected medicine
-  const [selectedMedicine, setSelectedMedicine] = useState(null);
-  // State for store selected medicine data
-  const [selectedMedicineData, setSelectedMedicineData] = useState(null);
-
   const handleMedicineChange = (selectedOption) => {
+    // console.log("Selected Option value:", selectedOption)
     setSelectedMedicine(selectedOption);
     // Find the selected medicine's data from the medicineName array
     const selectedMedicineData = medicineName.find(
@@ -101,10 +114,15 @@ const Sales = () => {
   };
 
   const handleRemoveProduct = (index) => {
+    const removedProduct = products[index];
+    // console.log("Remove products are:", removedProduct)
     const updatedProducts = [...products];
     updatedProducts.splice(index, 1);
     setProducts(updatedProducts);
+     // Update the total price by subtracting the price of the removed product
+  setTotalPrice(totalPrice - removedProduct.price);
   };
+
 
   return (
     <>
@@ -144,7 +162,7 @@ const Sales = () => {
                   onChange={handleInputChange}
                 />
               </div>
-              <button onClick={(e)=>handleAddProduct(e)}>Add</button>
+              <button onClick={handleAddProduct}>Add</button>
             </form>
           </div>
 
@@ -181,6 +199,23 @@ const Sales = () => {
                 </tbody>
               </table>
             </section>
+            <section className="price-calculate">
+              <div className="total-price">
+                <p className="total-price-title">Total Price:</p>
+                <p className="price-value">{totalPrice}</p>
+              </div>
+              <div className="discount">
+                <p className="discount-amount">Discount:</p>
+                <input type="number" className="discount-box" />
+              </div>
+              <div className="discount-price">
+                <p className="discount-price-title">Total after Discount:</p>
+                <p className="discount-price-value">200</p>
+              </div>
+              <button className="paid-button">Paid</button>
+            </section>
+
+            
           </div>
         </div>
       </Box>
