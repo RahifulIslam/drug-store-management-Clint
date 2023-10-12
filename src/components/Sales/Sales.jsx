@@ -24,9 +24,14 @@ const Sales = () => {
   // State to track selected medicine
   const [selectedMedicine, setSelectedMedicine] = useState(null);
 
-   //Calculate total price from the table
-   const [totalPrice, setTotalPrice] = useState(0);
-   console.log("Total Price are:", totalPrice)
+  //Calculate total price from the table
+  const [totalPrice, setTotalPrice] = useState(0);
+  //  console.log("Total Price are:", totalPrice)
+
+  //Calculate for the Discount price
+  const [discount, setDiscount] = useState(0);
+  console.log("Discount:", discount)
+  const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
 
   useEffect(() => {
     const fetchMedicineName = async () => {
@@ -52,6 +57,17 @@ const Sales = () => {
     fetchMedicineName();
   }, []);
 
+  useEffect(() => {
+    if (discount > 0) {
+      const discountAmount = parseFloat(discount);
+      const discountPrice = (totalPrice * discountAmount) / 100;
+      const totalAfterDiscount = totalPrice - discountPrice;
+      setTotalAfterDiscount(totalAfterDiscount);
+    } else {
+      setTotalAfterDiscount(totalPrice); // No discount, so total remains the same
+    }
+  }, [discount, totalPrice]); // Run the effect when discount or total price changes
+
   const handleAddProduct = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
@@ -69,8 +85,8 @@ const Sales = () => {
         quantity: 0,
         price: 0,
       });
-    // Update the total price by adding the price of the newly added product
-    setTotalPrice(totalPrice + newProduct.price);
+      // Update the total price by adding the price of the newly added product
+      setTotalPrice(totalPrice + newProduct.price);
     }
   };
 
@@ -119,10 +135,17 @@ const Sales = () => {
     const updatedProducts = [...products];
     updatedProducts.splice(index, 1);
     setProducts(updatedProducts);
-     // Update the total price by subtracting the price of the removed product
-  setTotalPrice(totalPrice - removedProduct.price);
+    // Update the total price by subtracting the price of the removed product
+    setTotalPrice(totalPrice - removedProduct.price);
   };
 
+  // const calculateTotalAfterDiscount = ()=> {
+  //   const total = totalPrice;
+  //   const discountAmount = parseFloat(discount);
+  //   const discountPrice = (total * discountAmount)/100;
+  //   const totalAfterDiscount = total - discountPrice;
+  //   setTotalAfterDiscount(totalAfterDiscount);
+  // }
 
   return (
     <>
@@ -205,17 +228,21 @@ const Sales = () => {
                 <p className="price-value">{totalPrice}</p>
               </div>
               <div className="discount">
-                <p className="discount-amount">Discount:</p>
-                <input type="number" className="discount-box" />
+                <p className="discount-amount">Discount(%):</p>
+                <input
+                  type="number"
+                  className="discount-box"
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
+                />
+                 {/* <button onClick={calculateTotalAfterDiscount}>Apply Discount</button> */}
               </div>
               <div className="discount-price">
                 <p className="discount-price-title">Total after Discount:</p>
-                <p className="discount-price-value">200</p>
+                <p className="discount-price-value">{totalAfterDiscount}</p>
               </div>
               <button className="paid-button">Paid</button>
             </section>
-
-            
           </div>
         </div>
       </Box>
