@@ -8,15 +8,17 @@ import Select from "react-select";
 const Sales = () => {
   const [product, setProduct] = useState({
     medicine: "",
+    pricePerItem: 0,
     quantity: 0,
     price: 0,
   });
   // console.log("Product are:", product)
 
   const [products, setProducts] = useState([]);
+  console.log("Products are:", products)
 
-  const [medicineName, setMedicineName] = useState([]);
-  // console.log("Medicine Name and types are:", medicineName);
+  const [medicineInfo, setmedicineInfo] = useState([]);
+  // console.log("Medicine Name and types are:", medicineInfo);
   // State for store selected medicine data
   const [selectedMedicineData, setSelectedMedicineData] = useState(null);
   // console.log("Selected medicine data are:", selectedMedicineData)
@@ -30,11 +32,11 @@ const Sales = () => {
 
   //Calculate for the Discount price
   const [discount, setDiscount] = useState(0);
-  console.log("Discount:", discount)
+  // console.log("Discount:", discount)
   const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
 
   useEffect(() => {
-    const fetchMedicineName = async () => {
+    const fetchmedicineInfo = async () => {
       try {
         const token = localStorage.getItem("token");
         // console.log("Token", token);
@@ -48,13 +50,13 @@ const Sales = () => {
           "http://localhost:4000/api/medicine/get-medicine-name-and-category",
           config
         );
-        setMedicineName(response.data);
+        setmedicineInfo(response.data);
       } catch (error) {
         console.error("Error fetching medicine data:", error);
       }
     };
 
-    fetchMedicineName();
+    fetchmedicineInfo();
   }, []);
 
   useEffect(() => {
@@ -82,6 +84,7 @@ const Sales = () => {
       setProducts([...products, newProduct]);
       setProduct({
         medicine: "",
+        pricePerItem: 0,
         quantity: 0,
         price: 0,
       });
@@ -92,20 +95,27 @@ const Sales = () => {
 
   // For the searchable and scrolling
   // Define an array for options
-  const medicineOptions = medicineName.map((medicine, index) => ({
+  const medicineOptions = medicineInfo.map((medicine, index) => ({
     value: medicine.name,
     label: medicine.name,
   }));
 
   const handleMedicineChange = (selectedOption) => {
     // console.log("Selected Option value:", selectedOption)
-    setSelectedMedicine(selectedOption);
-    // Find the selected medicine's data from the medicineName array
-    const selectedMedicineData = medicineName.find(
+    // Find the selected medicine's data from the medicineInfo array
+    const selectedMedicineData = medicineInfo.find(
       (medicine) => medicine.name === selectedOption.value
     );
 
     setSelectedMedicineData(selectedMedicineData);
+    // Set the selling price in the product state
+  setProduct({
+    ...product,
+    pricePerItem: selectedMedicineData.selling_price,
+  });
+
+  setSelectedMedicine(selectedOption);
+
   };
 
   const handleInputChange = (e) => {
@@ -167,6 +177,15 @@ const Sales = () => {
               </div>
 
               <div className="input-box">
+                <label>Price per item:</label>
+                <input
+                  type="number"
+                  name="pricePerItem"
+                  value={product.pricePerItem}
+                />
+              </div>
+
+              <div className="input-box">
                 <label>Quantity:</label>
                 <input
                   type="number"
@@ -198,8 +217,9 @@ const Sales = () => {
                 <thead>
                   <tr>
                     <th>Medicine</th>
+                    <th>Price per item</th>
                     <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Total price</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -207,6 +227,7 @@ const Sales = () => {
                   {products.map((product, index) => (
                     <tr key={index}>
                       <td>{product.medicine}</td>
+                      <td>{product.pricePerItem}</td>
                       <td>{product.quantity}</td>
                       <td>{product.price}</td>
                       <td>
