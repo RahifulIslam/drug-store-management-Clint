@@ -15,16 +15,7 @@ const Sales = () => {
   // console.log("Product are:", product)
 
   const [products, setProducts] = useState([]);
-  console.log("Products are:", products)
-
-  const [medicineInfo, setmedicineInfo] = useState([]);
-  // console.log("Medicine Name and types are:", medicineInfo);
-  // State for store selected medicine data
-  const [selectedMedicineData, setSelectedMedicineData] = useState(null);
-  // console.log("Selected medicine data are:", selectedMedicineData)
-
-  // State to track selected medicine
-  const [selectedMedicine, setSelectedMedicine] = useState(null);
+  console.log("Products are:", products);
 
   //Calculate total price from the table
   const [totalPrice, setTotalPrice] = useState(0);
@@ -34,9 +25,18 @@ const Sales = () => {
   const [discount, setDiscount] = useState(0);
   // console.log("Discount:", discount)
   const [totalAfterDiscount, setTotalAfterDiscount] = useState(0);
+  //
+  const [medicineInfo, setMedicineInfo] = useState([]);
+  // console.log("Medicine Name and types are:", medicineInfo);
+  // State for store selected medicine data
+  const [selectedMedicineData, setSelectedMedicineData] = useState(null);
+  // console.log("Selected medicine data are:", selectedMedicineData)
+
+  // State to track selected medicine
+  const [selectedMedicine, setSelectedMedicine] = useState(null);
 
   useEffect(() => {
-    const fetchmedicineInfo = async () => {
+    const fetchMedicineInfo = async () => {
       try {
         const token = localStorage.getItem("token");
         // console.log("Token", token);
@@ -50,13 +50,13 @@ const Sales = () => {
           "http://localhost:4000/api/medicine/get-medicine-name-and-category",
           config
         );
-        setmedicineInfo(response.data);
+        setMedicineInfo(response.data);
       } catch (error) {
         console.error("Error fetching medicine data:", error);
       }
     };
 
-    fetchmedicineInfo();
+    fetchMedicineInfo();
   }, []);
 
   useEffect(() => {
@@ -106,16 +106,17 @@ const Sales = () => {
     const selectedMedicineData = medicineInfo.find(
       (medicine) => medicine.name === selectedOption.value
     );
+    console.log("Selected Medicine Data are:", selectedMedicineData);
 
     setSelectedMedicineData(selectedMedicineData);
     // Set the selling price in the product state
-  setProduct({
-    ...product,
-    pricePerItem: selectedMedicineData.selling_price,
-  });
+    setProduct({
+      ...product,
+      selectedMedicineId: selectedMedicineData._id,
+      pricePerItem: selectedMedicineData.selling_price,
+    });
 
-  setSelectedMedicine(selectedOption);
-
+    setSelectedMedicine(selectedOption);
   };
 
   const handleInputChange = (e) => {
@@ -149,6 +150,45 @@ const Sales = () => {
     setTotalPrice(totalPrice - removedProduct.price);
   };
 
+  const handlePaid = async () => {
+    // Prepare the data to send to the API
+    const saleData = {
+      medicines: products, // Array of selected medicines
+      total_price: totalPrice,
+      discount: discount,
+      total_after_discount: totalAfterDiscount,
+      // Other data you may want to send, e.g., sold_by, customer, paid_price, etc.
+    };
+  
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      // Send a POST request to the API
+      const response = await axios.post(
+        "http://localhost:4000/api/sale/createSale",
+        saleData,
+        config
+      );
+  
+      if (response.status === 201) {
+        // Sale record saved successfully
+        console.log("Sale record saved successfully.");
+        // You can reset the state or perform any other action here.
+      } else {
+        console.error("Failed to save sale record.");
+        // Handle the error, show a message, or take appropriate action.
+      }
+    } catch (error) {
+      console.error("An error occurred while sending the POST request:", error);
+      // Handle the error, show a message, or take appropriate action.
+    }
+  };
+  
   // const calculateTotalAfterDiscount = ()=> {
   //   const total = totalPrice;
   //   const discountAmount = parseFloat(discount);
@@ -256,13 +296,15 @@ const Sales = () => {
                   value={discount}
                   onChange={(e) => setDiscount(e.target.value)}
                 />
-                 {/* <button onClick={calculateTotalAfterDiscount}>Apply Discount</button> */}
+                {/* <button onClick={calculateTotalAfterDiscount}>Apply Discount</button> */}
               </div>
               <div className="discount-price">
                 <p className="discount-price-title">Total after Discount:</p>
                 <p className="discount-price-value">{totalAfterDiscount}</p>
               </div>
-              <button className="paid-button">Paid</button>
+              <button className="paid-button" onClick={handlePaid}>
+                Paid
+              </button>
             </section>
           </div>
         </div>
