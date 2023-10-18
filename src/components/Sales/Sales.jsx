@@ -7,15 +7,15 @@ import Select from "react-select";
 
 const Sales = () => {
   const [product, setProduct] = useState({
-    medicine: "",
-    pricePerItem: 0,
+    medicine_name: "",
+    price_per_item: 0,
     quantity: 0,
-    price: 0,
+    total_price_each_item: 0,
   });
   // console.log("Product are:", product)
 
   const [products, setProducts] = useState([]);
-  console.log("Products are:", products);
+  // console.log("Products are:", products);
 
   //Calculate total price from the table
   const [totalPrice, setTotalPrice] = useState(0);
@@ -72,24 +72,25 @@ const Sales = () => {
 
   const handleAddProduct = (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
+    // console.log("Selected Medicine are:", selectedMedicine)
 
-    if (selectedMedicine && product.quantity > 0 && product.price > 0) {
+    if (selectedMedicine && product.quantity > 0 && product.total_price_each_item > 0) {
       // Set the medicine name in the product before adding it
       const newProduct = {
         ...product,
-        medicine: selectedMedicine.value, // Set the selected medicine name
+        medicine_name: selectedMedicine.value, // Set the selected medicine name
       };
-      // console.log("New products are:", newProduct);
-      // console.log("Price of new product are:", newProduct.price)
+      console.log("New products are:", newProduct);
+      console.log("Price of new product are:", newProduct.total_price_each_item)
       setProducts([...products, newProduct]);
       setProduct({
-        medicine: "",
-        pricePerItem: 0,
+        medicine_name: "",
+        price_per_item: 0,
         quantity: 0,
-        price: 0,
+        total_price_each_item: 0,
       });
       // Update the total price by adding the price of the newly added product
-      setTotalPrice(totalPrice + newProduct.price);
+      setTotalPrice(totalPrice + newProduct.total_price_each_item);
     }
   };
 
@@ -106,14 +107,14 @@ const Sales = () => {
     const selectedMedicineData = medicineInfo.find(
       (medicine) => medicine.name === selectedOption.value
     );
-    console.log("Selected Medicine Data are:", selectedMedicineData);
+    // console.log("Selected Medicine Data are:", selectedMedicineData);
 
     setSelectedMedicineData(selectedMedicineData);
     // Set the selling price in the product state
     setProduct({
       ...product,
-      selectedMedicineId: selectedMedicineData._id,
-      pricePerItem: selectedMedicineData.selling_price,
+      medicine_id: selectedMedicineData._id,
+      price_per_item: selectedMedicineData.selling_price,
     });
 
     setSelectedMedicine(selectedOption);
@@ -130,7 +131,7 @@ const Sales = () => {
       setProduct({
         ...product,
         [name]: value,
-        price: totalPrice, // Set the calculated total price
+        total_price_each_item: totalPrice, // Set the calculated total price
       });
     } else {
       setProduct({
@@ -220,8 +221,8 @@ const Sales = () => {
                 <label>Price per item:</label>
                 <input
                   type="number"
-                  name="pricePerItem"
-                  value={product.pricePerItem}
+                  name="price_per_item"
+                  value={product.price_per_item}
                 />
               </div>
 
@@ -239,8 +240,8 @@ const Sales = () => {
                 <label>Total Price:</label>
                 <input
                   type="number"
-                  name="price"
-                  value={product.price}
+                  name="total_price_each_item"
+                  value={product.total_price_each_item}
                   onChange={handleInputChange}
                 />
               </div>
@@ -266,10 +267,10 @@ const Sales = () => {
                 <tbody>
                   {products.map((product, index) => (
                     <tr key={index}>
-                      <td>{product.medicine}</td>
-                      <td>{product.pricePerItem}</td>
+                      <td>{product.medicine_name}</td>
+                      <td>{product.price_per_item}</td>
                       <td>{product.quantity}</td>
-                      <td>{product.price}</td>
+                      <td>{product.total_price_each_item}</td>
                       <td>
                         <button
                           className="remove-button"
