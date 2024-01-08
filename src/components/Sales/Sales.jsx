@@ -4,6 +4,8 @@ import { Box } from "@mui/material";
 import Sidebar from "../SideBarPage";
 import axios from "axios";
 import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Sales = () => {
   const [product, setProduct] = useState({
@@ -74,14 +76,21 @@ const Sales = () => {
     e.preventDefault(); // Prevent the default form submission behavior
     // console.log("Selected Medicine are:", selectedMedicine)
 
-    if (selectedMedicine && product.quantity > 0 && product.total_price_each_item > 0) {
+    if (
+      selectedMedicine &&
+      product.quantity > 0 &&
+      product.total_price_each_item > 0
+    ) {
       // Set the medicine name in the product before adding it
       const newProduct = {
         ...product,
         medicine_name: selectedMedicine.value, // Set the selected medicine name
       };
       console.log("New products are:", newProduct);
-      console.log("Price of new product are:", newProduct.total_price_each_item)
+      console.log(
+        "Price of new product are:",
+        newProduct.total_price_each_item
+      );
       setProducts([...products, newProduct]);
       setProduct({
         medicine_name: "",
@@ -160,7 +169,7 @@ const Sales = () => {
       total_after_discount: totalAfterDiscount,
       // Other data you may want to send, e.g., sold_by, customer, paid_price, etc.
     };
-  
+
     try {
       const token = localStorage.getItem("token");
       const config = {
@@ -168,18 +177,21 @@ const Sales = () => {
           Authorization: `Bearer ${token}`,
         },
       };
-  
+
       // Send a POST request to the API
       const response = await axios.post(
         "http://localhost:4000/api/sale/createSale",
         saleData,
         config
       );
-  
+
       if (response.status === 201) {
-        // Sale record saved successfully
-        console.log("Sale record saved successfully.");
-        // You can reset the state or perform any other action here.
+        // Show a success toast
+        toast.success("Sale information saved successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000, // Auto close the toast after 2 seconds
+        });
+        resetState(); // Call the reset function to reset the state values
       } else {
         console.error("Failed to save sale record.");
         // Handle the error, show a message, or take appropriate action.
@@ -189,7 +201,15 @@ const Sales = () => {
       // Handle the error, show a message, or take appropriate action.
     }
   };
-  
+
+  //After Submitting the Paid button Reset the
+  const resetState = () => {
+    setProducts([]);
+    setTotalPrice(0);
+    setDiscount(0);
+    setTotalAfterDiscount(0);
+  };
+
   // const calculateTotalAfterDiscount = ()=> {
   //   const total = totalPrice;
   //   const discountAmount = parseFloat(discount);
@@ -200,6 +220,7 @@ const Sales = () => {
 
   return (
     <>
+    <ToastContainer />
       <Box sx={{ display: "flex" }}>
         <Sidebar />
         <div className="sales-container">

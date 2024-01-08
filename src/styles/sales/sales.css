@@ -213,4 +213,35 @@ tbody tr:hover{
     width: 20%;
 }
 
+/* Media query for screens with a maximum width of 600px (mobile) */
+@media only screen and (max-width: 600px) {
+  .sales-container {
+    flex-direction: column;
+  }
+
+  .sales-container__addMedicine,
+  .sales-container__dataAddedTable {
+    border: none;
+  }
+
+  /* For add medicine portion */
+  .sales-container__addMedicine header {
+    margin-right: 114px;
+    margin-bottom: 10px; /* Add space below the header */
+  }
+
+  .form .input-box {
+    width: 100%; 
+  }
+
+  .form button {
+    width: 100%;
+  }
+
+  /* For data add table */
+  .sales-container__dataAddedTable .table{
+    width: 70%;
+  }
+
+}
 
