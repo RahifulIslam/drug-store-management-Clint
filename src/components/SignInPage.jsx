@@ -1,8 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import {
   TextField,
   Button,
@@ -11,6 +10,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 const SignInPage = () => {
   const [signInData, setSignInData] = useState({
@@ -19,8 +19,8 @@ const SignInPage = () => {
   });
 
   const [errorMessage, setErrorMessage] = useState(""); // State to hold the error message
+  const { executeRecaptcha } = useGoogleReCaptcha(); // Use the reCAPTCHA hook
   const navigate = useNavigate();
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,10 +29,17 @@ const SignInPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!executeRecaptcha) {
+      setErrorMessage("ReCAPTCHA not ready");
+      return;
+    }
+
     try {
+      const recaptchaToken = await executeRecaptcha('signin'); // Execute reCAPTCHA
       const response = await axios.post(
         "http://localhost:4000/api/user/signin",
-        signInData
+        { ...signInData, recaptchaToken } // Include the reCAPTCHA token
       );
       console.log(response.data); // Handle successful response
       localStorage.setItem("token", response.data.token);
